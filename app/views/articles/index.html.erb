@@ -1,4 +1,4 @@
-<div class="w-full">
+<div class="w-full" data-controller="article-search">
   <% if notice.present? %>
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
   <% end %>
@@ -6,9 +6,14 @@
   <div class="flex justify-between items-center">
     <h1 class="font-bold text-4xl">Articles</h1>
     <%= link_to "New article", new_article_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
-  </div>
 
-  <div id="articles" class="min-w-full">
-    <%= render @articles %>
+    
+    </div>
+    <%= form_with(url: articles_path, method: "get", id: "articleSearchForm", data: {article_search_target: "form" }, class: "") do %>
+      <%= text_field_tag :search, params[:search], placeholder: "Search", id: "articleSearchInput", data: {article_search_target: "input"} %>
+    <% end %>
+
+  <div id="articles" class="min-w-full" data-article-search-target="articles">
+    <%= render "articles", articles: @articles %>
   </div>
 </div>

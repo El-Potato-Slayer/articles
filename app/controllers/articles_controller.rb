@@ -2,7 +2,21 @@ class ArticlesController < ApplicationController
   before_action :set_article, only: %i[ show edit update destroy ]
 
   def index
-    @articles = Article.all
+    if (params[:search].present?)
+      @articles = Article.where("title LIKE ?", "%#{params[:search]}%")
+    else
+      @articles = Article.all
+    end
+
+    respond_to do |format|
+      format.html do
+        if request.xhr?
+          render partial: "articles", locals: { articles: @articles }
+        else
+          render :index
+        end
+      end
+    end
   end
 
   def show
