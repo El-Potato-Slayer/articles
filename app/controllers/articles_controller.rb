@@ -2,8 +2,13 @@ class ArticlesController < ApplicationController
   before_action :set_article, only: %i[ show edit update destroy ]
 
   def index
-    if (params[:search].present?)
+    query = params[:search]
+    if (query.present?)
       @articles = Article.where("title LIKE ?", "%#{params[:search]}%")
+      ip_address = request.remote_ip
+
+      puts "ip address: ", ip_address
+      Rails.cache.write(ip_address, query)
     else
       @articles = Article.all
     end
