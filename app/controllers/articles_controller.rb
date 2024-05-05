@@ -5,11 +5,10 @@ class ArticlesController < ApplicationController
     query = params[:search]
     if (query.present?)
       @articles = Article.where("title LIKE ?", "%#{params[:search]}%")
-      ip_address = request.remote_ip
+      ip_address = "IP:#{request.remote_ip}"
+      timed_query = "#{query}:#{DateTime.now.to_i}"
 
-      puts "ip address: ", ip_address
-      Rails.cache.write(ip_address, query)
-      RedisSubscriberJob.perform_async(ip_address, query)
+      Rails.cache.write(ip_address, timed_query)
     else
       @articles = Article.all
     end

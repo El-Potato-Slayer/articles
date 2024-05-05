@@ -34,6 +34,7 @@ gem "redis", ">= 4.0.1"
 gem 'hiredis'
 gem 'redis-rails'
 gem 'sidekiq'
+gem 'sidekiq-cron'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
