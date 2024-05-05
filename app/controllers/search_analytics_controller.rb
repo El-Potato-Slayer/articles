@@ -1,5 +1,6 @@
 class SearchAnalyticsController < ApplicationController
   before_action :set_search_analytic, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!
 
   # GET /search_analytics or /search_analytics.json
   def index
