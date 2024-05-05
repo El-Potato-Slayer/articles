@@ -9,6 +9,7 @@ class ArticlesController < ApplicationController
 
       puts "ip address: ", ip_address
       Rails.cache.write(ip_address, query)
+      RedisSubscriberJob.perform_async(ip_address, query)
     else
       @articles = Article.all
     end
