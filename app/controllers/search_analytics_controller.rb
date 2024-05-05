@@ -2,25 +2,30 @@ class SearchAnalyticsController < ApplicationController
   before_action :set_search_analytic, only: %i[ show edit update destroy ]
   before_action :authenticate_user!
 
-  # GET /search_analytics or /search_analytics.json
   def index
-    @search_analytics = SearchAnalytic.all
+    SearchAnalyticJob.perform_async
+    @job_started = true
   end
 
-  # GET /search_analytics/1 or /search_analytics/1.json
+  def results 
+    analytics = Rails.cache.read("search_analytics")
+    if analytics
+      render json: {status: :ok, analytics: analytics}
+    else
+      render json: {status: :processing, status: :accepted}
+    end
+  end
+
   def show
   end
 
-  # GET /search_analytics/new
   def new
     @search_analytic = SearchAnalytic.new
   end
 
-  # GET /search_analytics/1/edit
   def edit
   end
 
-  # POST /search_analytics or /search_analytics.json
   def create
     @search_analytic = SearchAnalytic.new(search_analytic_params)
 
@@ -35,7 +40,6 @@ class SearchAnalyticsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /search_analytics/1 or /search_analytics/1.json
   def update
     respond_to do |format|
       if @search_analytic.update(search_analytic_params)
@@ -48,7 +52,6 @@ class SearchAnalyticsController < ApplicationController
     end
   end
 
-  # DELETE /search_analytics/1 or /search_analytics/1.json
   def destroy
     @search_analytic.destroy!
 
@@ -59,12 +62,10 @@ class SearchAnalyticsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_search_analytic
       @search_analytic = SearchAnalytic.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def search_analytic_params
       params.require(:search_analytic).permit(:ip_address, :query)
     end
