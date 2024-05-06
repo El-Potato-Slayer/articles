@@ -1,12 +1,17 @@
 <div id="<%= dom_id search_analytic %>">
   <p class="my-5">
-    <strong class="block font-medium mb-1">Ip address:</strong>
-    <%= search_analytic.ip_address %>
+    <strong class="block font-medium mb-1">Email:</strong>
+    <%= search_analytic.email %>
   </p>
 
   <p class="my-5">
     <strong class="block font-medium mb-1">Query:</strong>
     <%= search_analytic.query %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Count:</strong>
+    <%= search_analytic.count %>
   </p>
 
   <% if action_name != "show" %>

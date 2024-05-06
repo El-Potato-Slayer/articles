@@ -1,14 +1,16 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!
 
   def index
     query = params[:search]
     if (query.present?)
       @articles = Article.where("title LIKE ?", "%#{params[:search]}%")
-      ip_address = "IP:#{request.remote_ip}"
+      user_key = "User:#{current_user.email}"
       timed_query = "#{query}:#{DateTime.now.to_i}"
 
-      Rails.cache.write(ip_address, timed_query)
+      Rails.cache.write(user_key, timed_query)
+
     else
       @articles = Article.all
     end

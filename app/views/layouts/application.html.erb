@@ -12,8 +12,20 @@
   </head>
 
   <body>
-    <main class="container mx-auto mt-28 px-5 flex">
-      <%= yield %>
-    </main>
+    <% if user_signed_in? %>
+      <nav class="flex justify-between items-center gap-8 bg-blue-50 py-4 px-4 shadow-md">
+        <section></section>
+        <section class="flex justify-center items-center gap-8">
+          <a href="/">Home</a>
+          <a href="/search_analytics">Analytics</a>
+        </section>
+        <section>
+          <%= button_to 'Logout', destroy_user_session_path, method: :delete %>
+        </section>
+      </nav>
+      <% end %>
+      <main class="container mx-auto px-8 py-8 flex">
+        <%= yield %>
+      </main>
   </body>
 </html>
