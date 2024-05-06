@@ -4,7 +4,6 @@ class SearchAnalyticsController < ApplicationController
 
   def index
     SearchAnalyticJob.perform_async
-    @job_started = true
   end
 
   def results 
